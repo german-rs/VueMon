@@ -1,45 +1,77 @@
-<script setup>
+<script>
+import axios from 'axios';
+import Cabecera from './components/Cabecera.vue';
+import TarjetaPokemon from './components/TarjetaPokemon.vue';
+
+export default {
+  components: { 
+    Cabecera,
+    TarjetaPokemon 
+  },
+  data() {
+    return {
+      pokemones: [],
+      contadorDescubiertos: 0
+    };
+  },
+  async created() {
+    await this.cargarPokemones();
+  },
+  methods: {
+    // Mejorar esta función, muy sobrecargada.
+    async cargarPokemones() {
+      const url = 'https://pokeapi.co/api/v2/pokemon?limit=20';
+      try {
+        const respuesta = await axios.get(url);
+        this.pokemones = await Promise.all(respuesta.data.results.map(async (pokemon) => {
+          const detalles = await axios.get(pokemon.url);
+          return {
+            nombre: pokemon.name,
+            imagen: detalles.data.sprites.front_default
+          };
+        }));
+      } catch (error) {
+        console.error("Error al obtener datos de Pokémon:", error);
+      }
+    },
+    incrementarContadorDescubiertos() {
+      this.contadorDescubiertos++;
+    }
+  },
+  computed: {
+    informacionPokemones() {
+      return this.pokemones.map(pokemon => ({
+        nombre: pokemon.nombre,
+        imagen: pokemon.imagen
+      }));
+    }
+  }
+};
 </script>
 
 <template>
-  <header>
-    <img alt="Vue logo" class="logo" src="./assets/logo.svg" width="125" height="125" />
-
-    <div class="wrapper">
-      <HelloWorld msg="You did it!" />
+  <div id="app">
+    <Cabecera/>
+    <p>Pokémones descubiertos: {{ contadorDescubiertos }}/20</p>
+    <div class="contenedor-pokemones">
+      <TarjetaPokemon
+        v-for="pokemon in informacionPokemones"
+        :key="pokemon.nombre"
+        :pokemon="pokemon"
+        @descubierto="incrementarContadorDescubiertos"
+      />
     </div>
-  </header>
-
-  <main>
-    <TheWelcome />
-  </main>
+  </div>
 </template>
 
-<style scoped>
-header {
-  line-height: 1.5;
+<style>
+#app {
+  text-align: center;
+  font-family: Avenir, Helvetica, Arial, sans-serif;
 }
-
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
-}
-
-@media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
-  }
-
-  .logo {
-    margin: 0 2rem 0 0;
-  }
-
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
+.contenedor-pokemones {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
 }
 </style>
