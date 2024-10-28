@@ -1,10 +1,17 @@
-<script></script>
+<script>
+import ImagenLogo from './ImagenLogo.vue';
+export default{
+    components:{ ImagenLogo }
+}
+</script>
+
 <template>
     <header class="cabecera">
-       <img class="cabecera__img" src="../../public/logo-pokemon.png" alt="logo pokémon"> 
+       <ImagenLogo class="cabecera__img" /> 
        <h1>¿Quién es ese Pokémon?</h1>
     </header>
 </template>
+
 <style scoped>
 .cabecera{
     display: flex;
@@ -12,6 +19,8 @@
     justify-content: center;
     align-items: center;
     padding: 1em;
+    gap: 2em;
+    margin-bottom: 1em;
 }
 
 .cabecera__img{
@@ -19,9 +28,9 @@
 }
 
 @media (min-width: 475px){
-.cabecera__img{
-    width: 350px;
-}
+    .cabecera__img{
+        width: 350px;
+    }
 }
 
 @media (min-width: 640px){
