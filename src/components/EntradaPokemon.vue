@@ -29,11 +29,10 @@ export default {
 </template>
   
 <style scoped>
-    input {
+  input {
     margin-top: 10px;
     padding: 5px;
     width: 100%;
     box-sizing: border-box;
-    }
+  }
 </style>
-  

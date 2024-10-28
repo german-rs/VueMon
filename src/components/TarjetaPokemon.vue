@@ -1,7 +1,6 @@
 <script>
 import EntradaPokemon from './EntradaPokemon.vue';
 import BotonDescubrir from './BotonDescubrir.vue';
-
 export default {
   name: 'TarjetaPokemon',
   components: {
@@ -27,12 +26,12 @@ export default {
       }
     }
   }
-};
+}
 </script>
 
 <template>
     <div class="tarjeta-pokemon">
-      <img :src="pokemon.imagen" :class="{ difuminado: !esDescubierto }" alt="pokemon" />
+      <img :src="pokemon.imagen" :class="{ difuminado: !esDescubierto }" alt="pokémon" />
       <div v-if="!esDescubierto">
         <EntradaPokemon v-model="adivinanzaUsuario" @enviarAdivinanza="verificarNombre" />
         <BotonDescubrir @descubrir="verificarNombre" />
@@ -56,4 +55,3 @@ img {
   filter: blur(5px) grayscale(100%);
 }
 </style>
-  
